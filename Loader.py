@@ -15,9 +15,10 @@ newsit_encode = 'windows-1251'
 
 def news_sorted(text_on_sorted):
     with open(text_on_sorted,'rb') as f:
-        news = json.load(f)
-        code = news['rss']['channel']['description'].encode()
-        result = chardet.detect(code)
+        data = f.read()
+        result = chardet.detect(data)
+        text = data.decode(result['encoding'])
+        news = json.loads(text)
         print(result['encoding'])
 
     new_dict_news = {}
@@ -52,7 +53,7 @@ def news_sorted(text_on_sorted):
     for i,word, in enumerate(list_text_before_len):
         dict_text_before_word_count.update({word : list_text_before_len.count(list_text_before_len[i])})
 
-    sorted_finish = sorted(dict_text_before_word_count.items(), key = operator.itemgetter(1), reverse = True)
+    sorted_finish = sorted(dict_text_before_word_count.items(), key=operator.itemgetter(1), reverse=True)
     return pprint(sorted_finish[0:10])
 
 
